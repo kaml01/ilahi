@@ -1,0 +1,25 @@
+name: Deploy to Windows Server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted        # runs on YOUR server via the installed runner
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        working-directory: ./Frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: ./Frontend
+        run: npm run build
+
+      - name: Publish to IIS folder
+        shell: powershell
+        run: |
+          robocopy "Frontend\dist" "C:\LiveProjects\Ilahi" /MIR
+          if ($LASTEXITCODE -le 7) { exit 0 } else { exit 1 }
