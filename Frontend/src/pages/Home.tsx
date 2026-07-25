@@ -3,12 +3,14 @@ import { products } from '../data/site'
 import ProductCard from '../components/ProductCard'
 import Reveal from '../components/Reveal'
 import Tilt from '../components/Tilt'
+import HeroArt from '../components/HeroArt'
+import WelcomePopup from '../components/WelcomePopup'
 
 const values = [
   {
     icon: '✅',
-    title: 'FSSAI Compliant',
-    text: 'Every product meets FSSAI food-safety standards for quality and hygiene.',
+    title: 'Quality Assured',
+    text: 'Every product is checked to meet strict food-safety and hygiene standards.',
   },
   {
     icon: '💧',
@@ -30,29 +32,31 @@ const values = [
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="hero">
-        <div className="container hero__inner">
-          <div>
-            <span className="eyebrow">FSSAI Compliant · Premium Edible Oils</span>
-            <h1>Purity in Every Drop, Trust in Every Bottle</h1>
+      <WelcomePopup />
+
+      {/* Hero banner */}
+      <section className="hero2">
+        <div className="container hero2__inner">
+          <div className="hero2__text">
+            <span className="eyebrow">Premium Edible Oils</span>
+            <h1>
+              Your Cooking Deserves <span>the Very Best</span>
+            </h1>
             <p>
-              ILAHI CO. brings you a curated range of premium edible oils — from
-              cold-pressed Olive and Mustard oils to light Sunflower and versatile
-              Soybean oils — crafted for healthier, tastier cooking.
+              ILAHI CO. brings you Extra Virgin Olive Oil, Pomace Olive Oil and
+              cold-press Mustard Oil — pure, healthy and crafted for every kitchen.
             </p>
             <div className="btn-row mt-2">
-              <Link to="/products" className="btn btn--gold">
+              <Link to="/products" className="btn btn--primary">
                 Explore Our Products
               </Link>
-              <Link to="/contact" className="btn btn--ghost" style={{ color: '#fff', borderColor: '#fff' }}>
+              <Link to="/contact" className="btn btn--ghost">
                 Get in Touch
               </Link>
             </div>
           </div>
-          <div className="hero__art">
-            <div className="bottle">🫗</div>
-          </div>
+
+          <HeroArt />
         </div>
       </section>
 
@@ -91,8 +95,8 @@ export default function Home() {
           <Reveal>
             <div className="section__head">
               <span className="eyebrow">Our Range</span>
-              <h2>A Complete Portfolio of Edible Oils</h2>
-              <p>Four essential oils to cover every kitchen and every cuisine.</p>
+              <h2>A Premium Portfolio of Edible Oils</h2>
+              <p>Our full range to cover every kitchen and every cuisine.</p>
             </div>
           </Reveal>
           <div className="grid grid--4">
@@ -120,12 +124,12 @@ export default function Home() {
           <Reveal variant="zoom">
             <div className="stats">
               <div className="stat">
-                <b>4+</b>
-                <span>Oil Categories</span>
+                <b>3</b>
+                <span>Premium Oils</span>
               </div>
               <div className="stat">
                 <b>100%</b>
-                <span>FSSAI Compliant</span>
+                <span>Quality Assured</span>
               </div>
               <div className="stat">
                 <b>Pure</b>

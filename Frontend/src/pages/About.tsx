@@ -13,8 +13,8 @@ export default function About() {
           </div>
           <h1>About {company.name}</h1>
           <p>
-            A trusted name in premium, FSSAI-compliant edible oils — built on
-            purity, quality and long-term relationships.
+            A trusted name in premium edible oils — built on purity, quality and
+            long-term relationships.
           </p>
         </div>
       </section>
@@ -27,15 +27,14 @@ export default function About() {
             <h2>Bringing Purity to Every Kitchen</h2>
             <p>
               ILAHI CO. is a Delhi-based company engaged in the trade and supply of
-              high-quality edible oils. We deal in a focused range of oils — Olive
-              Oil, Mustard Oil, Sunflower Oil and Soybean Oil — chosen to serve
-              everyday households as well as commercial kitchens.
+              high-quality edible oils. We deal in a focused range of oils — Extra
+              Virgin Olive Oil, Pomace Olive Oil and cold-press Mustard Oil — chosen
+              to serve everyday households as well as commercial kitchens.
             </p>
             <p>
-              Operating in full compliance with FSSAI regulations, we place food
-              safety, purity and consistency at the heart of everything we do. From
-              sourcing to supply, our goal is simple: to put healthier, better-tasting
-              oil on every table.
+              With a strong focus on food safety, we place purity and consistency at
+              the heart of everything we do. From sourcing to supply, our goal is
+              simple: to put healthier, better-tasting oil on every table.
             </p>
           </Reveal>
           <Reveal variant="right">
@@ -65,8 +64,8 @@ export default function About() {
             <div className="info-item">
               <span className="ico">✅</span>
               <div>
-                <h4>Compliance</h4>
-                <p>FSSAI-compliant food business</p>
+                <h4>Commitment</h4>
+                <p>Quality, purity & food safety</p>
               </div>
             </div>
           </div>
@@ -125,7 +124,7 @@ export default function About() {
               {
                 icon: '🛡️',
                 t: 'Safety',
-                d: 'Strict adherence to FSSAI standards at every step.',
+                d: 'Strict adherence to food-safety standards at every step.',
               },
               {
                 icon: '🤝',

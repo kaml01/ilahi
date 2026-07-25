@@ -11,8 +11,8 @@ export default function Footer() {
           <div>
             <h4>{company.name}</h4>
             <p style={{ color: 'rgba(255,255,255,0.75)' }}>
-              An FSSAI-compliant supplier of premium edible oils, committed to
-              purity, quality and trust in every drop.
+              A trusted supplier of premium edible oils, committed to purity,
+              quality and trust in every drop.
             </p>
           </div>
 

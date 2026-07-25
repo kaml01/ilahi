@@ -8,9 +8,15 @@ type Props = {
 export default function ProductCard({ product, detailed = false }: Props) {
   return (
     <article className="card product">
-      <div className="product__icon" style={{ background: product.accent }}>
-        {product.icon}
-      </div>
+      {product.image ? (
+        <div className="product__photo">
+          <img src={product.image} alt={product.name} loading="lazy" />
+        </div>
+      ) : (
+        <div className="product__icon" style={{ background: product.accent }}>
+          {product.icon}
+        </div>
+      )}
       <h3>{product.name}</h3>
       <p>{detailed ? product.description : product.short}</p>
       <ul>
