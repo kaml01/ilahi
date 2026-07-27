@@ -6,20 +6,14 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted        # runs on YOUR server via the installed runner
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install dependencies
-        working-directory: ./Frontend
-        run: npm ci
-
-      - name: Build
-        working-directory: ./Frontend
-        run: npm run build
-
-      - name: Publish to IIS folder
-        shell: powershell
-        run: |
-          robocopy "Frontend\dist" "C:\LiveProjects\Ilahi" /MIR
-          if ($LASTEXITCODE -le 7) { exit 0 } else { exit 1 }
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          # port: ${{ secrets.SSH_PORT }}   # uncomment if you use a non-default SSH port
+          script: |
+            powershell -NoProfile -ExecutionPolicy Bypass -File C:\LiveProjects\ilahi\deploy.ps1
