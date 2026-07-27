@@ -14,6 +14,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          # port: ${{ secrets.SSH_PORT }}   # uncomment if you use a non-default SSH port
+          port: ${{ secrets.SSH_PORT }}   # uncomment if you use a non-default SSH port
           script: |
             powershell -NoProfile -ExecutionPolicy Bypass -File C:\LiveProjects\ilahi\deploy.ps1
