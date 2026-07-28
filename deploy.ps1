@@ -39,14 +39,14 @@ function Invoke-Native {
     }
 }
 
-Write-Host "==> [1/5] Pulling latest code from main..." -ForegroundColor Cyan
+Write-Host "==> [1/6] Pulling latest code from main..." -ForegroundColor Cyan
 Invoke-Native git @('-C', $RepoDir, 'reset', '--hard', 'HEAD')        'git reset'
 Invoke-Native git @('-C', $RepoDir, 'fetch', 'origin', 'main')         'git fetch'
 Invoke-Native git @('-C', $RepoDir, 'reset', '--hard', 'origin/main')  'git reset to origin/main'
 $sha = (git -C $RepoDir rev-parse --short HEAD).Trim()
 Write-Host "    now at commit $sha" -ForegroundColor DarkGray
 
-Write-Host "==> [2/5] Installing dependencies..." -ForegroundColor Cyan
+Write-Host "==> [2/6] Installing dependencies..." -ForegroundColor Cyan
 Set-Location $Frontend
 # npm.cmd, not npm - the .ps1 shim can be blocked by execution policy under the service account
 if (Test-Path (Join-Path $Frontend "package-lock.json")) {
@@ -55,11 +55,11 @@ if (Test-Path (Join-Path $Frontend "package-lock.json")) {
     Invoke-Native npm.cmd @('install', '--no-audit', '--no-fund') 'npm install'
 }
 
-Write-Host "==> [3/5] Building production bundle (staged)..." -ForegroundColor Cyan
+Write-Host "==> [3/6] Building production bundle (staged)..." -ForegroundColor Cyan
 if (Test-Path $Staging) { Remove-Item $Staging -Recurse -Force }
 Invoke-Native npm.cmd @('run', 'build', '--', '--outDir', 'dist-staging', '--emptyOutDir') 'npm run build'
 
-Write-Host "==> [4/5] Verifying build output..." -ForegroundColor Cyan
+Write-Host "==> [4/6] Verifying build output..." -ForegroundColor Cyan
 $indexHtml = Join-Path $Staging "index.html"
 if (-not (Test-Path $indexHtml))                       { throw "Build produced no index.html in $Staging" }
 if (-not (Test-Path (Join-Path $Staging "assets")))    { throw "Build produced no assets/ folder in $Staging" }
