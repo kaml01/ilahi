@@ -9,7 +9,11 @@ export default function Footer() {
       <div className="container">
         <div className="footer__grid">
           <div>
-            <h4>{company.name}</h4>
+            <img
+              src="/images/ilahi-logo-white.png"
+              alt={company.name}
+              className="footer__logo"
+            />
             <p style={{ color: 'rgba(255,255,255,0.75)' }}>
               A trusted supplier of premium edible oils, committed to purity,
               quality and trust in every drop.

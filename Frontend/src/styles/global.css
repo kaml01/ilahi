@@ -221,9 +221,9 @@ img {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(251, 250, 246, 0.9);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
+  background: var(--green-900);
+  border-bottom: 0;
+  box-shadow: 0 6px 20px rgba(11, 61, 46, 0.18);
 }
 
 .nav__inner {
@@ -235,17 +235,19 @@ img {
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   font-weight: 800;
-  color: var(--green-900);
+  color: #fff;
   font-size: 1.15rem;
   letter-spacing: 0.02em;
 }
 
-.brand__mark {
-  width: 40px;
-  height: 40px;
+.brand__logo {
+  height: 34px;
+  width: auto;
+  display: block;
 }
 
 .brand small {
@@ -253,7 +255,7 @@ img {
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: var(--gold-600);
+  color: var(--gold-500);
   text-transform: uppercase;
 }
 
@@ -268,14 +270,14 @@ img {
 
 .nav__links a {
   font-weight: 600;
-  color: var(--ink);
+  color: rgba(255, 255, 255, 0.85);
   padding: 6px 0;
   position: relative;
 }
 
 .nav__links a.active,
 .nav__links a:hover {
-  color: var(--green-700);
+  color: var(--gold-500);
 }
 
 .nav__links a.active::after {
@@ -295,7 +297,7 @@ img {
   border: 0;
   cursor: pointer;
   font-size: 1.6rem;
-  color: var(--green-900);
+  color: #fff;
 }
 
 @media (max-width: 820px) {
@@ -312,8 +314,8 @@ img {
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
+    background: var(--green-900);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     padding: 8px 20px 16px;
     display: none;
   }
@@ -327,7 +329,7 @@ img {
     display: block;
     padding: 12px 0;
     width: 100%;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
 }
 
@@ -573,6 +575,13 @@ img {
   padding: 56px 0 24px;
 }
 
+.footer__logo {
+  height: 42px;
+  width: auto;
+  display: block;
+  margin: 0 0 14px;
+}
+
 .footer h4 {
   color: #fff;
   margin: 0 0 14px;
@@ -622,31 +631,35 @@ img {
 
 /* ---------- Page hero (inner pages) ---------- */
 .page-hero {
-  background: linear-gradient(160deg, #0b3d2e, #14603c);
-  color: #fff;
+  color: var(--ink);
   padding: 66px 0;
   text-align: center;
 }
 
 .page-hero h1 {
-  color: #fff;
+  color: var(--green-900);
   margin-bottom: 8px;
 }
 
 .page-hero p {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--ink-soft);
   max-width: 620px;
   margin: 0 auto;
 }
 
 .crumbs {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--ink-soft);
   margin-bottom: 12px;
 }
 
 .crumbs a {
-  color: var(--gold-500);
+  color: var(--green-700);
+  font-weight: 600;
+}
+
+.crumbs a:hover {
+  color: var(--gold-600);
 }
 
 /* ============================================================
@@ -939,21 +952,28 @@ img {
 .page-hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(130deg, #0b3d2e, #14603c, #0b3d2e);
-  background-size: 220% 220%;
-  animation: gradientShift 14s ease infinite;
+  /* Warm cream band — a touch deeper than the page paper so it still
+     reads as its own block above the content sections. */
+  background: radial-gradient(
+      900px 420px at 85% 115%,
+      rgba(233, 185, 73, 0.16),
+      transparent
+    ),
+    linear-gradient(180deg, #fdfcf7 0%, #f2efe3 100%);
+  border-bottom: 1px solid var(--line);
 }
+/* Same dot texture as the home hero, inverted for the light band */
 .page-hero::before {
   content: '';
   position: absolute;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: rgba(233, 185, 73, 0.25);
-  filter: blur(60px);
-  top: -60px;
-  right: 10%;
-  animation: blob 16s ease-in-out infinite;
+  inset: 0;
+  background-image: radial-gradient(
+    rgba(11, 61, 46, 0.07) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 26px 26px;
+  opacity: 0.6;
+  pointer-events: none;
 }
 .page-hero .container {
   position: relative;
@@ -967,12 +987,13 @@ img {
   animation: fadeInUp 0.7s ease 0.15s both;
 }
 
-/* ---- Nav brand mark gentle spin on hover ---- */
-.brand__mark {
-  transition: transform 0.6s ease;
+/* ---- Nav brand mark gentle lift on hover ---- */
+.brand__logo {
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
-.brand:hover .brand__mark {
-  transform: rotateY(360deg);
+.brand:hover .brand__logo {
+  transform: scale(1.04);
+  opacity: 0.9;
 }
 
 /* ---- Respect reduced motion ---- */
@@ -1022,11 +1043,10 @@ video {
   }
   .brand {
     font-size: 1.02rem;
-    gap: 10px;
+    gap: 2px;
   }
-  .brand__mark {
-    width: 34px;
-    height: 34px;
+  .brand__logo {
+    height: 28px;
   }
   /* Center inner-page hero content nicely */
   .page-hero {
@@ -1091,6 +1111,10 @@ video {
   .footer__grid {
     text-align: center;
   }
+  .footer__logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
   .footer__grid ul {
     display: inline-block;
     text-align: left;
@@ -1135,19 +1159,24 @@ video {
 .hero2 {
   position: relative;
   overflow: hidden;
+  /* Same warm cream band as the inner-page heroes. */
   background: radial-gradient(
-      1000px 480px at 85% 120%,
-      rgba(15, 81, 50, 0.18),
+      1000px 480px at 85% 115%,
+      rgba(233, 185, 73, 0.16),
       transparent
     ),
-    linear-gradient(135deg, #d7e65a 0%, #c2d94b 45%, #aecb3c 100%);
+    linear-gradient(180deg, #fdfcf7 0%, #f2efe3 100%);
+  border-bottom: 1px solid var(--line);
 }
 /* subtle pattern dots */
 .hero2::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(15, 81, 50, 0.08) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(
+    rgba(11, 61, 46, 0.07) 1.5px,
+    transparent 1.5px
+  );
   background-size: 26px 26px;
   opacity: 0.6;
   pointer-events: none;
@@ -1173,13 +1202,13 @@ video {
   display: block;
 }
 .hero2__text p {
-  color: #33502f;
+  color: var(--ink-soft);
   font-size: 1.12rem;
   max-width: 520px;
   font-weight: 500;
 }
 .hero2 .eyebrow {
-  color: var(--green-700);
+  color: var(--gold-600);
 }
 
 /* Product composition — bottles positioned by centre so the transparent

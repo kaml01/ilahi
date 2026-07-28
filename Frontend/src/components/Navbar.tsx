@@ -9,11 +9,12 @@ export default function Navbar() {
     <header className="nav">
       <div className="container nav__inner">
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
-          <img src="/favicon.svg" alt="" className="brand__mark" />
-          <span>
-            {company.name}
-            <small>{company.tagline}</small>
-          </span>
+          <img
+            src="/images/ilahi-logo-white.png"
+            alt={company.name}
+            className="brand__logo"
+          />
+          <small>{company.tagline}</small>
         </Link>
 
         <button
