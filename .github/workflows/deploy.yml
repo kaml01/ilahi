@@ -3,11 +3,20 @@ name: Deploy to Windows Server
 on:
   push:
     branches: [main]
+  workflow_dispatch:        # lets you re-run a deploy by hand from the Actions tab
+
+# Two deploys writing to C:\LiveProjects\ilahi at once would corrupt the build.
+# Queue them instead of running in parallel.
+concurrency:
+  group: deploy-windows-server
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: self-hosted        # runs on the runner agent installed on YOUR server
+    timeout-minutes: 20
     steps:
       - name: Deploy
         shell: powershell
         run: powershell -NoProfile -ExecutionPolicy Bypass -File C:\LiveProjects\ilahi\deploy.ps1
+        # deploy.ps1 pulls the repo itself, so no actions/checkout step is needed.
