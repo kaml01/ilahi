@@ -1,0 +1,21 @@
+# Normalise line endings so the repo stops warning that "LF will be replaced
+# by CRLF" on every checkout, and so diffs stay clean between machines.
+* text=auto eol=lf
+
+# Windows-only files that must keep CRLF to run correctly
+*.ps1  text eol=crlf
+*.cmd  text eol=crlf
+*.bat  text eol=crlf
+
+# IIS reads this as XML; keep it CRLF like the rest of the Windows tooling
+*.config text eol=crlf
+
+# Never touch the contents of binary assets
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff binary
+*.woff2 binary

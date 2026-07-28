@@ -19,6 +19,14 @@ $RepoDir  = $PSScriptRoot
 $Frontend = Join-Path $RepoDir "Frontend"
 $Dist     = Join-Path $Frontend "dist"
 $Staging  = Join-Path $Frontend "dist-staging"
+$Previous = Join-Path $Frontend "dist-previous"   # rollback snapshot
+
+# The IIS site "Illahi" is bound to port 8004 with no host header.
+# Used by the post-deploy smoke test below.
+$SmokeUrls = @(
+    'http://localhost:8004/',        # home
+    'http://localhost:8004/shop'     # deep link - also proves URL Rewrite still works
+)
 
 # $ErrorActionPreference does NOT catch native exe failures (git/npm), so
 # every external command must be routed through this.
@@ -58,8 +66,15 @@ if (-not (Test-Path (Join-Path $Staging "assets")))    { throw "Build produced n
 if (-not (Test-Path (Join-Path $Staging "web.config"))){ throw "web.config missing from build - SPA routing would 404 on refresh" }
 Write-Host "    ok - index.html + assets/ + web.config present" -ForegroundColor DarkGray
 
-Write-Host "==> [5/5] Swapping staged build into dist..." -ForegroundColor Cyan
+Write-Host "==> [5/6] Swapping staged build into dist..." -ForegroundColor Cyan
 if (-not (Test-Path $Dist)) { New-Item -ItemType Directory -Path $Dist | Out-Null }
+
+# Snapshot the currently-live build so a bad deploy can be rolled back.
+if (Test-Path $Previous) { Remove-Item $Previous -Recurse -Force }
+robocopy $Dist $Previous /MIR /NFL /NDL /NJH /NJS /NP /R:2 /W:2 | Out-Null
+if ($LASTEXITCODE -ge 8) { throw "failed to snapshot current build to $Previous (exit $LASTEXITCODE)" }
+$global:LASTEXITCODE = 0
+
 # /MIR mirrors staging into dist (adds, updates and deletes stale files).
 # robocopy exit codes 0-7 are success; 8+ is a real failure.
 robocopy $Staging $Dist /MIR /NFL /NDL /NJH /NJS /NP /R:2 /W:2 | Out-Null
@@ -67,5 +82,27 @@ if ($LASTEXITCODE -ge 8) { throw "robocopy failed to publish into $Dist (exit $L
 $global:LASTEXITCODE = 0
 Remove-Item $Staging -Recurse -Force
 
+Write-Host "==> [6/6] Smoke testing the live site..." -ForegroundColor Cyan
+# Publishing the files is not proof the site works - this catches a broken
+# web.config, a missing rewrite module or a stopped app pool.
+$failed = @()
+foreach ($url in $SmokeUrls) {
+    try {
+        $code = (Invoke-WebRequest $url -UseBasicParsing -TimeoutSec 20).StatusCode
+        if ($code -ne 200) { $failed += "$url returned HTTP $code" } else { Write-Host "    $url => 200" -ForegroundColor DarkGray }
+    } catch {
+        $failed += "$url failed: $($_.Exception.Message)"
+    }
+}
+
+if ($failed.Count -gt 0) {
+    Write-Host "!! Smoke test FAILED - rolling back to the previous build" -ForegroundColor Red
+    $failed | ForEach-Object { Write-Host "   $_" -ForegroundColor Red }
+    robocopy $Previous $Dist /MIR /NFL /NDL /NJH /NJS /NP /R:2 /W:2 | Out-Null
+    $global:LASTEXITCODE = 0
+    throw "Deploy rolled back: the site did not respond correctly after publishing commit $sha"
+}
+
 Write-Host ""
 Write-Host "==> Deployed commit $sha. IIS is serving: $Dist" -ForegroundColor Green
+Write-Host "==> Rollback snapshot kept at: $Previous" -ForegroundColor DarkGray
